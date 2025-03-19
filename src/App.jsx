@@ -10,9 +10,10 @@ const App = () => {
   const [newTodo, setNewTodo] = useState("");
   const [error, setError] = useState("");
 
-  const [lat, setLat] = useState([37.95]);
-  const [lon, setLon] = useState([-91.76]);
+  const [lat, setLat] = useState(0);
+  const [lon, setLon] = useState(0);
   const [data, setData] = useState([]);
+  const loading = 0;
 
   useEffect(() => {
     const fetchData = async() => {
@@ -28,6 +29,7 @@ const App = () => {
   }
   fetchData();
   }, [lat, lon]);
+
 
   const addTodo = useCallback(
     (state) => {
@@ -129,16 +131,17 @@ const App = () => {
           </li>
         ))}
       </ul>
-	{data ? (
+	{(typeof data.main != 'undefined') ? (
           <>
             <p>{data.name} Weather:</p>
-            <p> Wind Speed: {data?.wind?.speed  ?? 'undefined'} m/s</p>
-            <p>temperature: {data?.main?.temp ?? 'undefined'} °C</p>
-            <p> Humidity: {data?.main?.humidity ?? 'undefined'}% </p>
-          </>
-        ) : (
-          <p>Loading</p>
-        )}        
+            <p> Wind Speed: {data.wind.speed} m/s</p>
+            <p>temperature: {data.main.temp} °C</p>
+            <p> Humidity: {data.main.humidity}% </p>
+	    <p> Weather: {data.weather[0].description}</p>
+          </> 
+         ): (
+          <div></div>
+         )}
 
     </div>
   );
